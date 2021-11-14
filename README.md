@@ -8,7 +8,7 @@ The datagenerator_raytrace3.0 is support for mm-wave (28GHz+) channel state info
 # Citation
 Please cite our work as:
 
-Y. Zhang, J. Sun, G. Gui, H. Gacanin and H. Sari, "A Generalized Channel Dataset Generator for 5G New Radio Systems Based on Ray-Tracing," in IEEE Wireless Communications Letters, vol. 10, no. 11, pp. 2402-2406, Nov. 2021, doi: 10.1109/LWC.2021.3101908.
+Y. Zhang, J. Sun, G. Gui, H. Gacanin and H. Sari, "A Generalized Channel Dataset Generator for 5G New Radio Systems Based on Ray-Tracing," in IEEE Wireless Communications Letters, vol. 10, no. 11, pp. 2402-2406, Nov. 2021.
 
 ```
 
