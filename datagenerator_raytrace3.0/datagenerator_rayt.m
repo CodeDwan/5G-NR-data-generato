@@ -1,30 +1,27 @@
 function [] = datagenerator_rayt(bsPosition,bsHight,bsrange,mapf,savefile,samplenum)
 
-%% 基站和区域设置（每个不同）
+
 format long
 bsset.bsPosition = bsPosition; % Lat, lon
-bsset.bsHight =bsHight;                       %bs hight(m).
-bsset.bsrange = bsrange;   %基站覆盖距离(米)
+bsset.bsHight =bsHight;                       
+bsset.bsrange = bsrange;   
 mapfile = mapf;       %选择地图
-% filename = "../data_ray3.0/"+"f"+num2str(freq/1e9)+"_NRB"+num2str(RBNum)+"_"+num2str(number)+"test.mat" %保存路径
+
 filename = savefile;
 %% 参数设置
-number = samplenum; %样本数量
-freq = 28e9;  %中心频率
+number = samplenum; 
+freq = 28e9;  
 RBNum = 26;   %资源块数
 BSTX = [8,4];   %基站天线
 UETX = [2,2];    %用户天线
-% Bandwidth configuration, required to set the channel sampling rate and for perfect channel estimation
 SCS = 30; % subcarrier spacing
 NRB = RBNum; % number of resource blocks, 10 MHz bandwidth
 HCSI = zeros(samplenum,RBNum, prod(UETX),prod(BSTX));
 %% 其他参数
-bsset.bsAntSize = BSTX;                    % number of rows and columns in rectangular array (base station)
-bsset.bsArrayOrientation = [0 0].';       % azimuth (0 deg is East, 90 deg is North) and elevation (positive points upwards) in deg 方位角和仰角
-degrange = bsset.bsrange / 111000; %1度约为111公里
+bsset.bsAntSize = BSTX;                    
+bsset.bsArrayOrientation = [0 0].';       % 
+degrange = bsset.bsrange / 111000; 
 
-
-%% 随机
 userset.lat = randpostion(bsset.bsPosition(1)-degrange,bsset.bsPosition(1)+degrange,number);
 userset.lont = randpostion(bsset.bsPosition(2)-degrange,bsset.bsPosition(2)+degrange,number);
 userset.hight = randpostion(0.5,1.5,number);
@@ -32,7 +29,6 @@ userset.azi = randpostion(0,360,number);
 userset.ele = randpostion(0,90,number);
 userset.Ant = UETX;
 
-%% 循环生成CSI
 for index = 1:number
     % 该样本参数设置_bs
     fc = freq;                            % carrier frequency (Hz)
@@ -138,11 +134,7 @@ for index = 1:number
             pg = [sum(pg(1:2,:,:,:)); pg(3:end,:,:,:)];
         end
         pg = abs(pg).^2;
-    %     plot(pow2db(pg(:,1,1,1)),'o-.');hold on
-    %     plot(avgPathGains,'x-.');hold off
-    %     legend("Instantaneous (1^{st} tx - 1^{st} rx antenna)","Average (from ray tracing)")
-    %     xlabel("Path number"); ylabel("Gain (dB)")
-    %     title('Path gains')
+
         %% 
         % Obtain a perfect channel estimate for slot 0.
 
@@ -232,12 +224,11 @@ range = (max-min).*rand(number,1) + min;
 
 end
 
-% 处理CSI
+
 function [H] = dealCSI(hest,RBNum)
-%     hest = permute(hest,[1,2,4,3]); %子载波*OFDM*基站天线*UE天线 
     hest_shape = size(hest);
     H = zeros([RBNum,hest_shape(3:end)]);
-    hest = mean(hest,2); %子载波*1*基站天线*用户天线，平均OFDM符号数
+    hest = mean(hest,2); 
     hest = reshape(hest,[hest_shape(1),hest_shape(3:4)]);
     for m = 1:RBNum
         temp = hest((m-1)*12+1:m*12,:,:);
@@ -248,6 +239,5 @@ end
 
 
 
-%% Local Functions
 
 
